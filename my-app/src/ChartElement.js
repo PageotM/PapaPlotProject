@@ -27,7 +27,7 @@ const SingleChart = () => {
         {
           type: 'line',
           data: {
-            labels: data.map(row => row.profondeur),
+            labels: data.map(row => row.Temp),
             datasets: [
               {
                 label: 'Temperature en fonction de la profondeur',
@@ -36,9 +36,19 @@ const SingleChart = () => {
                   y: row.profondeur,
                   x: row.Temp,
                 }))
-  
               }
             ]
+          },
+          options:{
+            scales:{
+              x: {
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  stepSize: 10 // Adjust step size as needed
+                }
+              },
+            }
           }
         }
       );
