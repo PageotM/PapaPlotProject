@@ -12,7 +12,7 @@ const SingleChart = () => {
       { profondeur: -25, Temp: 15 },
       { profondeur: -35, Temp: 14 },
       { profondeur: -47, Temp: 21 },
-      { profondeur: -53, Temp: 27 },
+      { profondeur: -503, Temp: 400 },
     ];
 
     // Destroy previous Chart instance if it exists
@@ -43,10 +43,7 @@ const SingleChart = () => {
             scales:{
               x: {
                 type: 'linear',
-                position: 'bottom',
-                ticks: {
-                  stepSize: 10 // Adjust step size as needed
-                }
+                position: 'bottom'
               },
             }
           }
@@ -64,8 +61,8 @@ const SingleChart = () => {
   }, []); // Empty dependency array to run only once after mounting
 
   return (
-    <div style={{ width: '800px' }}>
-      <canvas id="acquisitions" ref={chartContainer}></canvas>
+    <div >
+      <canvas id="acquisitions" ref={chartContainer} width="300" height="1000" ></canvas>
     </div>
   );
 }
