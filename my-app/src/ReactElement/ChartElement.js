@@ -1,19 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 
-const SingleChart = () => {
+const SingleChart = ({data, field}) => {
   const chartContainer = useRef(null); // Reference to the canvas container
   const chartInstance = useRef(null); // Reference to the Chart instance
 
   useEffect(() => {
-    const data = [
-      { profondeur: -10, Temp: 10 },
-      { profondeur: -12, Temp: 12 },
-      { profondeur: -25, Temp: 15 },
-      { profondeur: -35, Temp: 14 },
-      { profondeur: -47, Temp: 21 },
-      { profondeur: -503, Temp: 400 },
-    ];
 
     // Destroy previous Chart instance if it exists
     if (chartInstance.current) {
@@ -26,31 +18,48 @@ const SingleChart = () => {
         chartContainer.current.getContext('2d'), // Get the canvas context
         {
           type: 'line',
+          maintainAspectRatio: false,
           data: {
-            labels: data.map(row => row.Temp),
+            labels: data.map(row => row.MD),
             datasets: [
               {
                 label: 'Temperature en fonction de la profondeur',
-                data: data
-                .map(row => ({
-                  y: row.profondeur,
-                  x: row.Temp,
-                }))
+                data: data.map(row => ({ y: row.MD, x: row[field] })),
+                xAxisID: 'x-axis-1'
+
+              },
+              {
+                label: 'C1',
+                data: data.map(row => ({ y: row.MD, x: row["C1"] })),
+                xAxisID: 'x-axis-2'
               }
             ]
           },
           options:{
             scales:{
-              x: {
+              'x-axis-1': {
                 type: 'linear',
-                position: 'bottom'
+                position: 'top'
               },
+              y: {
+                type: 'linear',
+                position: 'left',
+                grid: {
+                  drawOnChartArea: false,
+                }
+              },
+              'x-axis-2': {
+                type: 'linear',
+                position: 'top',
+                grid: {
+                  drawOnChartArea: false,
+                }
+              }
             }
           }
         }
       );
     }
-
     // Cleanup function
     return () => {
       // Ensure Chart instance is destroyed when component unmounts
@@ -58,13 +67,13 @@ const SingleChart = () => {
         chartInstance.current.destroy();
       }
     };
-  }, []); // Empty dependency array to run only once after mounting
+  }, [data,field]); // Empty dependency array to run only once after mounting
 
   return (
     <div >
-      <canvas id="acquisitions" ref={chartContainer} width="300" height="1000" ></canvas>
+      <canvas id="acquisitions" ref={chartContainer}></canvas>
     </div>
   );
-}
+  }
 
 export default SingleChart;
