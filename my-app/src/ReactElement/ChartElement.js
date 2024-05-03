@@ -23,34 +23,34 @@ const SingleChart = ({data, field}) => {
             labels: data.map(row => row.MD),
             datasets: [
               {
-                label: 'Temperature en fonction de la profondeur',
+                label: 'Temperature',
                 data: data.map(row => ({ y: row.MD, x: row[field] })),
-                xAxisID: 'x-axis-1'
+                xAxisID: 'x-axis-main'
 
               },
               {
                 label: 'C1',
                 data: data.map(row => ({ y: row.MD, x: row["C1"] })),
-                xAxisID: 'x-axis-2'
+                xAxisID: 'x-axis-C1'
               }
             ]
           },
           options:{
             scales:{
-              'x-axis-1': {
+              'x-axis-main': {
                 type: 'linear',
                 position: 'top'
               },
-              y: {
+              'x-axis-C1': {
                 type: 'linear',
-                position: 'left',
+                position: 'top',
                 grid: {
                   drawOnChartArea: false,
                 }
               },
-              'x-axis-2': {
+              y: {
                 type: 'linear',
-                position: 'top',
+                position: 'left',
                 grid: {
                   drawOnChartArea: false,
                 }
