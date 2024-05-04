@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js/auto';
-
-const SingleChart = ({data, field}) => {
+import './css/trackElement.css';
+const SingleChart = ({curve}) => {
   const chartContainer = useRef(null); // Reference to the canvas container
   const chartInstance = useRef(null); // Reference to the Chart instance
 
@@ -14,50 +14,38 @@ const SingleChart = ({data, field}) => {
 
     // Create new Chart instance
     if (chartContainer.current) {
-      chartInstance.current = new Chart(
-        chartContainer.current.getContext('2d'), // Get the canvas context
-        {
+
+      const chartSpec =         {
           type: 'line',
           maintainAspectRatio: false,
           data: {
-            labels: data.map(row => row.MD),
+            //labels: curve.dataSet.map(row => row[curve.yField]),
             datasets: [
-              {
-                label: 'Temperature',
-                data: data.map(row => ({ y: row.MD, x: row[field] })),
-                xAxisID: 'x-axis-main'
-
-              },
-              {
-                label: 'C1',
-                data: data.map(row => ({ y: row.MD, x: row["C1"] })),
-                xAxisID: 'x-axis-C1'
-              }
+             curve.datasetSpec
             ]
           },
           options:{
+            aspectRatio:0.5,
             scales:{
-              'x-axis-main': {
+              "x-axis-main": {
                 type: 'linear',
                 position: 'top'
-              },
-              'x-axis-C1': {
-                type: 'linear',
-                position: 'top',
-                grid: {
-                  drawOnChartArea: false,
-                }
               },
               y: {
                 type: 'linear',
                 position: 'left',
                 grid: {
-                  drawOnChartArea: false,
+                  drawOnChartArea: true,
                 }
               }
             }
           }
         }
+
+      console.log(JSON.stringify(chartSpec, null, 2) );
+      chartInstance.current = new Chart(
+        chartContainer.current.getContext('2d'), // Get the canvas context
+        chartSpec
       );
     }
     // Cleanup function
@@ -67,11 +55,10 @@ const SingleChart = ({data, field}) => {
         chartInstance.current.destroy();
       }
     };
-  }, [data,field]); // Empty dependency array to run only once after mounting
-
+  }, [curve.dataset, curve.field, curve]); 
   return (
-    <div >
-      <canvas id="acquisitions" ref={chartContainer}></canvas>
+    <div class = "trackContainer">
+      <canvas class = "track" id="track_1" ref={chartContainer}></canvas>
     </div>
   );
   }

@@ -1,34 +1,39 @@
 class Curve{
     useChartXAxis = true;
-
-    private dataSet;
-    private label;
+    xField;
+    yField;
+    dataSet;
+    label;
     constructor(dataSet, xField, yField = "MD", label = ""){
-        if (label != ""){
+        this.useChartXAxis = true
+        if (label !== ""){
             this.label = label;
         }
         else{
             this.label = xField;
         }
-        this.xField = xField
-        this.dataSet = dataSet.map(row => {"yField" : row[yField], "xField" : row[xField]})
+        this.xField = xField;
+        this.yField = yField;
+        this.dataSet = dataSet.map(row =>  ({y : row[yField],
+                                             x : row[xField]
+                                            }))
     }
 
     toggleUseXAxis(){
         this.toggleUseXAxis = !this.toggleUseXAxis
     }
     get axisName(){
-        return "x-axis-" +  this.useChartXAxis ? "main" : this.label;
+        return ("x-axis-" +  (this.useChartXAxis ? "main" : this.label));
     }
-    getDataSetSpec(){
-
-        return ({
+    get datasetSpec(){
+        const dataSetSpec = {
             label: this.label,
-            data: this.dataSet.map(row => ({ y: row["yField"], x: row["xField"] })),
+            data: this.dataSet.map(row => ({ y: row.y, x: row.x })),
             xAxisID: this.axisName
-          })
+          };
+        return (dataSetSpec);
     }
-    getAxisSpec(){
+    get axisSpec(){
         const axisSpec = {};
         axisSpec[this.axisName] = {
             type: 'linear',
