@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js/auto';
-import Track from '../service/TrackService';
 import './css/trackElement.css';
-const SingleChart = ({curve}) => {
+
+const SingleChart = ({track}) => {
   const chartContainer = useRef(null); // Reference to the canvas container
   const chartInstance = useRef(null); // Reference to the Chart instance
 
@@ -15,15 +15,9 @@ const SingleChart = ({curve}) => {
 
     // Create new Chart instance
     if (chartContainer.current) {
-
-
-      
-      const Track1 = new Track();
-      Track1.curveList = [curve];
-
       chartInstance.current = new Chart(
         chartContainer.current.getContext('2d'), // Get the canvas context
-        Track1.trackSpec
+        track.trackSpec
       );
     }
     // Cleanup function
@@ -33,7 +27,7 @@ const SingleChart = ({curve}) => {
         chartInstance.current.destroy();
       }
     };
-  }, [curve.dataset, curve.field, curve]); 
+  }, [track]); 
   return (
     <div className = "trackContainer">
       <canvas className = "track" id="track_1" ref={chartContainer}></canvas>
