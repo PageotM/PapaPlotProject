@@ -4,26 +4,27 @@ import Track from "../service/TrackService";
 function selectFile(event) {
     Controller.selectedFile = event.target.files[0];
 }
-function addSelectedFile() {
+async function getTableFromFile() {
     if (!Controller.selectedFile) return;
 
-    Controller.parseCSVFromFile(Controller.selectedFile)
-        .then(parsedData => {
-            // Do something with the parsed data
-            Controller.addTable(parsedData, "default Name");
-        })
-        .catch(error => {
-            console.error('Error parsing CSV file:', error);
-        });
+    const parsedData = await Controller.parseCSVFromFile(Controller.selectedFile)
+    return Controller.formatData(parsedData, document.getElementById("tableNameInput" ).value);
+
 
 }
-const ControllerMenu = ({ trackList, setTrackList }) => {
+const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList}) => {
     return (
         <div id="menuController">
             <ul>
                 <li>
                     <input onChange={selectFile} type="file" accept=".csv" />
-                    <button onClick={addSelectedFile}>Read File</button>
+                    <input id="tableNameInput" type="text"></input>
+                    <button onClick={async () => {
+                        const newTable = await getTableFromFile();
+                        console.log(newTable);
+                        setTableList([...tableList, newTable]);
+                        console.log(tableList);}
+                    }>Read File</button>
                 </li>
                 <li>
                     <button onClick={() => 

@@ -24,7 +24,7 @@ const App = () => {
     return (
         <div>
             <TrackContainer trackList={trackList} />
-            <ControllerMenu trackList={trackList} setTrackList={setTrackList}/>
+            <ControllerMenu trackList={trackList} setTrackList={setTrackList} tableList = {tableList} setTableList = {setTableList}/>
         </div>
     );
 }

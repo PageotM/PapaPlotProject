@@ -37,15 +37,15 @@ class Controller {
         }
         return data;
     }
-    static addTable(data, dataTableName) {
+    static formatData(data, dataTableName) {
         const numericData = data.filter(row => {
             return Object.values(row).every(value => !isNaN(parseFloat(value)));
         });
         const tableDataObject = {};
         tableDataObject[dataTableName] = numericData;
     
-        Controller.dataTableList.push(tableDataObject);
-        console.log(Controller.dataTableList);
+        return tableDataObject;
+
     }
 }
 
