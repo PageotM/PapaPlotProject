@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SingleChart from './ChartElement';
 import defaultData from '../testingData/data'
 import { Curve } from '../service/CurveService';
 import Track from '../service/TrackService';
+import ControllerMenu from './controllerMenu';
+import TrackContainer from '../service/TrackContainer';
 
 const App = () => {
-const curve1 = new Curve(defaultData, "Total Gas")
-const Track1 = new Track();
-Track1.curveList = [curve1];
+    const [trackList, setTrackList] = useState([]);
+    const [curveList, setCurveList] = useState([]);
+    const [tableList, setTableList] = useState([]);
 
 
 
-return(<div>
-    <SingleChart track = {Track1} />
-</div>
-);
+    useEffect(() => {
+        const curve1 = new Curve(defaultData, "Total Gas");
+        const track1 = new Track();
+        track1.curveList = [curve1];
+        setTrackList([track1]);
+    }, []);
+
+
+    return (
+        <div>
+            <TrackContainer trackList={trackList} />
+            <ControllerMenu trackList={trackList} setTrackList={setTrackList}/>
+        </div>
+    );
 }
 
 export default App;
