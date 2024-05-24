@@ -29,7 +29,7 @@ const SingleChart = ({track}) => {
     };
   }, [track.trackSpec]); 
   return (
-    <div className = "trackContainer">
+    <div className = "singleTrackContainer">
       <canvas className = "track" id="track_1" ref={chartContainer}></canvas>
     </div>
   );

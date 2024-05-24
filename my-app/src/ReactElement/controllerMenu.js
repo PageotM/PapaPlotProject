@@ -74,7 +74,6 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
                 </li>
                 <li>
                     <select onChange={handleTableChange} id ="curveCreationTableSelect">
-                        <option>Select Table</option>
                     {tableList.map((table, index) => (
                             <option key={index} value={JSON.stringify(table)}>{Object.keys(table)[0]}</option>
                         ))}

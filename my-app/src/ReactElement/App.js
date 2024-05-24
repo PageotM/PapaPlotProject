@@ -23,7 +23,7 @@ const App = () => {
 
 
     return (
-        <div>
+        <div >
             <TrackContainer trackList={trackList} />
             <ControllerMenu trackList={trackList} setTrackList={setTrackList} tableList = {tableList} setTableList = {setTableList} curveList={curveList} setCurveList={setCurveList}/>
         </div>

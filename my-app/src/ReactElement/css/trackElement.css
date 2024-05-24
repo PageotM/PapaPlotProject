@@ -1,4 +1,11 @@
-.trackContainer {
+.singleTrackContainer {
     width: 250px;
     height: 150vh; /* 150% of viewport height */
 }
+.multipleTrackContainer{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start; /* Align items to the start of the cross axis */
+        justify-content: flex-start; /* Align items to the start of the main axis */
+        gap: 16px; /* Optional: add space between the items */
+    }
