@@ -1,4 +1,4 @@
-import DataReader from "../service/ControllerService";
+import DataReader from "../service/DataReaderService";
 import Track from "../service/TrackService";
 import { useState } from "react";
 import { Curve } from "../service/CurveService";
@@ -47,6 +47,19 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
 
         console.log("------")
     }
+    const createNewTable = async () => {
+        const newTable = await getTableFromFile();
+        setTableList([...tableList, newTable]);
+        console.log(tableList.length);
+        if (tableList.length === 0){
+            console.log(newTable);
+            const selectedTableString = JSON.stringify(newTable);
+            const selectedTableObj = JSON.parse(selectedTableString);
+            setSelectedTable(selectedTableObj);
+            setSelectedTableKeys(Object.keys(Object.values(selectedTableObj)[0][0])); //C'est moche? oui, mais c'est pas toi qui décide.
+    
+        }
+    }
     const lemmeSee = () => {
         console.log(trackList);
 
@@ -61,12 +74,7 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
                 <li>
                     <input onChange={selectFile} type="file" accept=".csv" />
                     <input id="tableNameInput" type="text"></input>
-                    <button onClick={async () => {
-                        const newTable = await getTableFromFile();
-                        console.log(newTable);
-                        setTableList([...tableList, newTable]);
-                        console.log(tableList);}
-                    }>Read File</button>
+                    <button onClick={createNewTable}>Read File</button>
                 </li>
                 <li>
                     <button onClick={() => 
