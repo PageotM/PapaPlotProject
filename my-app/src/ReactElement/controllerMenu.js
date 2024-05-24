@@ -30,6 +30,7 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
         const name = document.getElementById("curveCreationNameSelect").value;
         console.log(param);
         const newCurve = new Curve(table, param);
+        console.log(newCurve);
         const newItem = {};
         newItem[name] = newCurve
         setCurveList([...curveList, newItem]);
