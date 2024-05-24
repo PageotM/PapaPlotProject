@@ -1,6 +1,6 @@
 import Track from "./TrackService";
 
-class Controller {
+class DataReader {
 
     static selectedFile = null;
     static dataTableList = [];
@@ -12,7 +12,7 @@ class Controller {
             const reader = new FileReader();
             reader.onload = () => {
                 const fileContent = reader.result;
-                const parsedData = Controller._parseCSVContent(fileContent);
+                const parsedData = DataReader._parseCSVContent(fileContent);
                 resolve(parsedData);
             };
             reader.onerror = () => {
@@ -50,4 +50,4 @@ class Controller {
 }
 
 
-export default Controller;
+export default DataReader;

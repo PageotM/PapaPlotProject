@@ -27,7 +27,7 @@ const SingleChart = ({track}) => {
         chartInstance.current.destroy();
       }
     };
-  }, [track]); 
+  }, [track.trackSpec]); 
   return (
     <div className = "trackContainer">
       <canvas className = "track" id="track_1" ref={chartContainer}></canvas>

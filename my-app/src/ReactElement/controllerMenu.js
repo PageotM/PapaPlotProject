@@ -1,16 +1,16 @@
-import Controller from "../service/ControllerService";
+import DataReader from "../service/ControllerService";
 import Track from "../service/TrackService";
 import { useState } from "react";
 import { Curve } from "../service/CurveService";
 
 function selectFile(event) {
-    Controller.selectedFile = event.target.files[0];
+    DataReader.selectedFile = event.target.files[0];
 }
 async function getTableFromFile() {
-    if (!Controller.selectedFile) return;
+    if (!DataReader.selectedFile) return;
 
-    const parsedData = await Controller.parseCSVFromFile(Controller.selectedFile)
-    return Controller.formatData(parsedData, document.getElementById("tableNameInput" ).value);
+    const parsedData = await DataReader.parseCSVFromFile(DataReader.selectedFile)
+    return DataReader.formatData(parsedData, document.getElementById("tableNameInput" ).value);
 
 
 }
@@ -28,6 +28,7 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
         const param = document.getElementById("curveCreationParamSelect").value;
         const table = Object.values(selectedTable)[0];
         const name = document.getElementById("curveCreationNameSelect").value;
+        console.log(param);
         const newCurve = new Curve(table, param);
         const newItem = {};
         newItem[name] = newCurve
@@ -39,8 +40,8 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, cur
         const curve = curveList[document.getElementById("curveAssignCurveSelect").value];
         const newTrackList = trackList;
         const track = newTrackList[document.getElementById("curveAssignTrackSelect").value];
-        track.curveList = [Object.values(curve)[0]];
-        setTrackList(newTrackList);
+        track.curveList.push(Object.values(curve)[0]);
+        setTrackList([...newTrackList]);
 
 
         console.log("------")
