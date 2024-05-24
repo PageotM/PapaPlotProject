@@ -18,13 +18,14 @@ const App = () => {
         const track1 = new Track();
         track1.curveList = [curve1];
         setTrackList([track1]);
+        setCurveList([{populatedCurve:curve1}]);
     }, []);
 
 
     return (
         <div>
             <TrackContainer trackList={trackList} />
-            <ControllerMenu trackList={trackList} setTrackList={setTrackList} tableList = {tableList} setTableList = {setTableList}/>
+            <ControllerMenu trackList={trackList} setTrackList={setTrackList} tableList = {tableList} setTableList = {setTableList} curveList={curveList} setCurveList={setCurveList}/>
         </div>
     );
 }

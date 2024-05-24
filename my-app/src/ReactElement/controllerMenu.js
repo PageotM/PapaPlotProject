@@ -1,5 +1,7 @@
 import Controller from "../service/ControllerService";
 import Track from "../service/TrackService";
+import { useState } from "react";
+import { Curve } from "../service/CurveService";
 
 function selectFile(event) {
     Controller.selectedFile = event.target.files[0];
@@ -12,7 +14,45 @@ async function getTableFromFile() {
 
 
 }
-const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList}) => {
+const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList, curveList, setCurveList}) => {
+    const [selectedTable, setSelectedTable] = useState(null);
+    const [selectedTableKeys, setSelectedTableKeys] = useState([]);
+
+    const handleTableChange = (event) => {
+        const selectedTableString = event.target.value;
+        const selectedTableObj = JSON.parse(selectedTableString);
+        setSelectedTable(selectedTableObj);
+        setSelectedTableKeys(Object.keys(Object.values(selectedTableObj)[0][0])); //C'est moche? oui, mais c'est pas toi qui décide.
+    };
+    const createNewCurve = () => {
+        const param = document.getElementById("curveCreationParamSelect").value;
+        const table = Object.values(selectedTable)[0];
+        const name = document.getElementById("curveCreationNameSelect").value;
+        const newCurve = new Curve(table, param);
+        const newItem = {};
+        newItem[name] = newCurve
+        setCurveList([...curveList, newItem]);
+    }
+
+    const assignCurve = () => {
+    
+        const curve = curveList[document.getElementById("curveAssignCurveSelect").value];
+        const newTrackList = trackList;
+        const track = newTrackList[document.getElementById("curveAssignTrackSelect").value];
+        track.curveList = [Object.values(curve)[0]];
+        setTrackList(newTrackList);
+
+
+        console.log("------")
+    }
+    const lemmeSee = () => {
+        console.log(trackList);
+
+        console.log(curveList);
+
+        console.log(tableList);
+    }
+
     return (
         <div id="menuController">
             <ul>
@@ -31,31 +71,38 @@ const ControllerMenu = ({ trackList, setTrackList , tableList, setTableList}) =>
                         setTrackList([...trackList, new Track()])}>Add Track</button>
                 </li>
                 <li>
-                    <select>
-                        {Controller.trackList.map((track,index) => (
-                <option key={index}>{track}</option>
-                        ))}                    
-                </select>
-                    <select>
-                        <option></option>
-                    </select>
-                    <select>
-                        <option></option>
+                    <select onChange={handleTableChange} id ="curveCreationTableSelect">
+                        <option>Select Table</option>
+                    {tableList.map((table, index) => (
+                            <option key={index} value={JSON.stringify(table)}>{Object.keys(table)[0]}</option>
+                        ))}
                     </select>
 
-                    <button>Add Curve</button>
+                    <select id ="curveCreationParamSelect">
+                        {selectedTableKeys.map((key, index) => (
+                            <option key={index}>{key}</option>
+                        ))}
+                    </select>
+                    <input type = "text" id = "curveCreationNameSelect"></input>
+                    <button onClick={createNewCurve}>Create Curve</button>
 
                 </li>
                 <li>
-                    <select>
-                        <option value="track">Track</option>
+                    <select id = "curveAssignCurveSelect">
+                    {curveList.map((curve, index) => (
+                            <option key={index} value={index}>{Object.keys(curve)[0]}</option>
+                        ))}
                     </select>
-                    <select>
-                        <option value="curve">Curve</option>
+                    <select id = "curveAssignTrackSelect">
+                    {trackList.map((track, index) => (
+                            <option key={index} value={index}>{index}</option>
+                        ))}
                     </select>
-                    <button>Add Curve to Track</button>
+                    <button onClick={assignCurve}>associate curve to Track</button>
                 </li>
             </ul>
+            <button onClick={lemmeSee}>GET STATUS</button>
+
         </div>
     );
 }
